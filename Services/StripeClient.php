@@ -50,6 +50,31 @@ class StripeClient
         return Customer::retrieve($customerId);
     }
 
+    /**
+     * @param $customerId
+     * @param $source
+     * @return Card
+     */
+    public function addNewCard($customerId, $source)
+    {
+        return Customer::createSource(
+            $customerId,
+            ['source' => $source]
+        );
+    }
+
+    /**
+     * @param $customerId
+     * @return Customer
+     */
+    public function updateCustomerDefaultSource($customerId, $sourceId)
+    {
+        return Customer::update(
+            $customerId,
+            ['default_source' => $sourceId]
+        );
+    }
+
     #########################
     ##     Subscription    ##
     #########################
@@ -100,19 +125,19 @@ class StripeClient
     #########################
 
     /**
-     * @param $token
+     * @param $customer
      * @param $amount
      * @param $description
      * @param string $currency
      * @return Charge
      */
-    public function createCharge($token, $amount, $description, $currency = 'mxn')
+    public function createCharge($customer, $amount, $description, $currency = 'mxn')
     {
         return Charge::create([
             'amount' => $amount,
             'currency' => $currency,
             'description' => $description,
-            'source' => $token,
+            'customer' => $customer,
         ]);
     }
 
