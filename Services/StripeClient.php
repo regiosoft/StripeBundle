@@ -82,18 +82,20 @@ class StripeClient
     /**
      * @param $customerId
      * @param $planId
+     * @param $cardId
      * @param null $trialEnd
      * @param null $billingCycleAnchor
      * @param null $coupon
      * @return Subscription
      */
-    public function createSubscription($customerId, $planId, $trialEnd = null, $billingCycleAnchor = null, $coupon = null)
+    public function createSubscription($customerId, $planId, $cardId = null, $trialEnd = null, $billingCycleAnchor = null, $coupon = null)
     {
         $subscriptionOptions = [
             'customer' => $customerId,
             'items' => [['plan' => $planId]]
         ];
 
+        if ($cardId) $subscriptionOptions['default_source'] = $cardId;
         if ($trialEnd) $subscriptionOptions['trial_end'] = $trialEnd;
         if ($billingCycleAnchor) $subscriptionOptions['billing_cycle_anchor'] = $billingCycleAnchor;
         if ($coupon) $subscriptionOptions['coupon'] = $coupon;
