@@ -56,6 +56,6 @@ class DriveOpStripeExtension extends Extension
      */
     public function getAlias()
     {
-        return Configuration::ROOT_NAME;
+        return Configuration::ROOT_NAME.'_'.Configuration::APP_NAME;
     }
 }
