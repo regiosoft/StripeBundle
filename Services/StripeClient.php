@@ -117,8 +117,14 @@ class StripeClient
      */
     public function cancelSubscription($subscriptionId)
     {
-        $subscription = $this->getSubscription($subscriptionId);
-        $subscription->cancel();
+        Subscription::update(
+            $subscriptionId,
+            [
+                'cancel_at_period_end' => true,
+            ]
+        );
+        //$subscription = $this->getSubscription($subscriptionId);
+        //$subscription->cancel();
     }
 
 
