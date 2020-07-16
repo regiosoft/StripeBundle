@@ -127,6 +127,19 @@ class StripeClient
         //$subscription->cancel();
     }
 
+    /**
+     * @param $subscriptionId
+     * @param $cardId
+     */
+    public function updateSubscriptionSource($subscriptionId, $cardId)
+    {
+        Subscription::update(
+            $subscriptionId,
+            [
+                'default_source' => $cardId,
+            ]
+        );
+    }
 
     #########################
     ##        Charge       ##
