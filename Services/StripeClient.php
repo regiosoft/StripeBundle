@@ -129,6 +129,19 @@ class StripeClient
 
     /**
      * @param $subscriptionId
+     */
+    public function activateSubscription($subscriptionId)
+    {
+        Subscription::update(
+            $subscriptionId,
+            [
+                'cancel_at_period_end' => false,
+            ]
+        );
+    }
+
+    /**
+     * @param $subscriptionId
      * @param $cardId
      */
     public function updateSubscriptionSource($subscriptionId, $cardId)
