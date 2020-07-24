@@ -6,6 +6,8 @@ use Stripe\Stripe;
 use Stripe\Customer;
 use Stripe\Subscription;
 use Stripe\Charge;
+use Exception;
+
 
 class StripeClient
 {
@@ -28,39 +30,57 @@ class StripeClient
      * @param $email
      * @param $name
      * @param $phone
-     * @return Customer
+     * @return Customer|string
      */
     public function createCustomer($token, $email, $name, $phone)
     {
-        return Customer::create(array(
-                "source" => $token,
-                "name" => $name,
-                "email" => $email,
-                'phone' => $phone
-            )
-        );
+
+        try {
+            $customer = Customer::create(array(
+                    "source" => $token,
+                    "name" => $name,
+                    "email" => $email,
+                    'phone' => $phone
+                )
+            );
+            return $customer;
+        } catch (Exception $error) {
+            return $error->getMessage();
+        }
     }
 
     /**
      * @param $customerId
-     * @return Customer
+     * @return Customer|string
      */
     public function getCustomer($customerId)
     {
-        return Customer::retrieve($customerId);
+        try {
+            $customer = Customer::retrieve($customerId);
+            return $customer;
+        } catch (Exception $error) {
+            return $error->getMessage();
+        }
+
     }
 
     /**
      * @param $customerId
      * @param $source
-     * @return Card
+     * @return string|\Stripe\Source
      */
     public function addNewCard($customerId, $source)
     {
-        return Customer::createSource(
-            $customerId,
-            ['source' => $source]
-        );
+
+        try {
+            $source = Customer::createSource(
+                $customerId,
+                ['source' => $source]
+            );
+            return $source;
+        } catch (Exception $error) {
+            return $error->getMessage();
+        }
     }
 
     /**
@@ -86,7 +106,7 @@ class StripeClient
      * @param null $trialEnd
      * @param null $billingCycleAnchor
      * @param null $coupon
-     * @return Subscription
+     * @return Subscription|string
      */
     public function createSubscription($customerId, $planId, $cardId = null, $trialEnd = null, $billingCycleAnchor = null, $coupon = null)
     {
@@ -100,7 +120,13 @@ class StripeClient
         if ($billingCycleAnchor) $subscriptionOptions['billing_cycle_anchor'] = $billingCycleAnchor;
         if ($coupon) $subscriptionOptions['coupon'] = $coupon;
 
-        return Subscription::create($subscriptionOptions);
+        try {
+            $subscription = Subscription::create($subscriptionOptions);
+            return $subscription;
+        } catch (Exception $error) {
+            return $error->getMessage();
+        }
+
     }
 
     /**
@@ -163,16 +189,22 @@ class StripeClient
      * @param $amount
      * @param $description
      * @param string $currency
-     * @return Charge
+     * @return Charge|string
      */
     public function createCharge($customer, $amount, $description, $currency = 'mxn')
     {
-        return Charge::create([
-            'amount' => $amount,
-            'currency' => $currency,
-            'description' => $description,
-            'customer' => $customer,
-        ]);
+
+        try {
+            $charge = Charge::create([
+                'amount' => $amount,
+                'currency' => $currency,
+                'description' => $description,
+                'customer' => $customer,
+            ]);
+            return $charge;
+        } catch (Exception $error) {
+            return $error->getMessage();
+        }
     }
 
 }
