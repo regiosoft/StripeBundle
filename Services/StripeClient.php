@@ -207,4 +207,21 @@ class StripeClient
         }
     }
 
+    /**
+     * @param $charge
+     * @return Charge|string
+     */
+    public function createRefund($charge)
+    {
+
+        try {
+            $refund = Refund::create([
+                'charge' => $charge
+            ]);
+            return $refund;
+        } catch (Exception $error) {
+            return $error->getMessage();
+        }
+    }
+
 }
