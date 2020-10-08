@@ -7,6 +7,7 @@ use Stripe\Customer;
 use Stripe\Subscription;
 use Stripe\Charge;
 use Stripe\Refund;
+use Stripe\PaymentIntent;
 use Exception;
 
 
@@ -220,6 +221,57 @@ class StripeClient
                 'charge' => $charge
             ]);
             return $refund;
+        } catch (Exception $error) {
+            return $error->getMessage();
+        }
+    }
+
+    #########################
+    ##   Payment intent    ##
+    #########################
+
+
+    /**
+     * @param $customer
+     * @param $amount
+     * @param $description
+     * @param $confirm
+     * @param string $currency
+     * @return PaymentIntent|string
+     */
+    public function createPaymentIntent(Customer $customer, $amount, $description, $confirm, $currency = 'mxn')
+    {
+        try {
+            $paymentIntent = PaymentIntent::create([
+                'customer' => $customer,
+                'amount' => $amount,
+                'description' => $description,
+                'currency' => $currency,
+                'confirm' => $confirm,
+                'payment_method' => $customer->default_source
+            ]);
+            return $paymentIntent;
+        } catch (Exception $error) {
+            return $error->getMessage();
+        }
+    }
+
+    /**
+     * @param $paymentIntentId
+     * @return PaymentIntent|string
+     */
+    public function confirmPaymentIntent($paymentIntentId)
+    {
+
+        try {
+            $paymentIntent = PaymentIntent::retrieve($paymentIntentId);
+        } catch (Exception $error) {
+            return $error->getMessage();
+        }
+
+        try {
+            $paymentIntent->confirm();
+            return $paymentIntent;
         } catch (Exception $error) {
             return $error->getMessage();
         }
