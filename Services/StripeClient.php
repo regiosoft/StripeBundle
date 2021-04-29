@@ -1,5 +1,5 @@
 <?php
-namespace DriveOp\StripeBundle\Services;
+namespace Regiosoft\StripeBundle\Services;
 use Stripe\Stripe;
 use Stripe\Customer;
 use Stripe\Subscription;

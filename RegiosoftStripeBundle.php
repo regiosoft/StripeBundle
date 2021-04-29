@@ -1,10 +1,10 @@
 <?php
-namespace DriveOp\StripeBundle;
+namespace Regiosoft\StripeBundle;
 
-use DriveOp\StripeBundle\DependencyInjection\DriveOpStripeExtension;
+use Regiosoft\StripeBundle\DependencyInjection\RegiosoftStripeExtension;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class DriveOpStripeBundle extends Bundle
+class RegiosoftStripeBundle extends Bundle
 {
     /**
      * {@inheritDoc}
@@ -16,7 +16,7 @@ class DriveOpStripeBundle extends Bundle
         // this allows us to have custom extension alias
         // default convention would put a lot of underscores
         if (null === $this->extension) {
-            $this->extension = new DriveOpStripeExtension();
+            $this->extension = new RegiosoftStripeExtension();
         }
 
         return $this->extension;
