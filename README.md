@@ -1,18 +1,18 @@
-# DriveOpStripeBundle
+# RegiosoftStripeBundle
 A simple Symfony bundle for Stripe Api.
 
 # Only SMS/WhatsApp!
 
 ## Setup
 
-### Step 1: Download DriveOpStripeBundle using composer
+### Step 1: Download RegiosoftStripeBundle using composer
 
 Add Stripe Bundle in your composer.json:
 
 ```js
 {
     "require": {
-        "driveop/stripe-bundle": "^1.0"
+        "regiosoft/stripe-bundle": "^1.0"
     }
 }
 ```
@@ -20,7 +20,7 @@ Add Stripe Bundle in your composer.json:
 Now tell composer to download the bundle by running the command:
 
 ``` bash
-$ php composer.phar update "driveop/stripe-bundle"
+$ php composer.phar update "regiosoft/stripe-bundle"
 ```
 
 
@@ -36,7 +36,7 @@ public function registerBundles()
 {
     $bundles = array(
         // ...
-        new DriveOp\StripeBundle\DriveOpStripeBundle()
+        new Regiosoft\StripeBundle\RegiosoftStripeBundle()
     );
 }
 ```
@@ -45,7 +45,7 @@ public function registerBundles()
 
 ``` yml
 # app/config/config.yml
-driveop:
+regiosoft:
         stripe:
             stripe_private_key:    %stripe_private_key%
 ```
