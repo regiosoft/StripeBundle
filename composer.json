@@ -1,12 +1,12 @@
 {
-    "name": "driveop/stripe-bundle",
+    "name": "regiosoft/stripe-bundle",
     "description": "A simple Symfony bundle for Stripe API.",
     "type": "symfony-bundle",
     "keywords": [
-        "driveop",
+        "regiosoft",
         "stripe"
     ],
-    "homepage": "https://github.com/driveop/StripeBundle",
+    "homepage": "https://github.com/regiosoft/StripeBundle",
     "license": "MIT",
     "authors": [
       {
@@ -31,7 +31,7 @@
     "require-dev": {
     },
     "autoload": {
-      "psr-0": { "DriveOp\\StripeBundle": "" }
+      "psr-0": { "Regiosoft\\StripeBundle": "" }
     },
-    "target-dir": "DriveOp/StripeBundle"
+    "target-dir": "Regiosoft/StripeBundle"
 }
