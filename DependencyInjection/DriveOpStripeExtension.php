@@ -1,6 +1,6 @@
 <?php
 
-namespace DriveOp\StripeBundle\DependencyInjection;
+namespace Regiosoft\StripeBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
@@ -14,7 +14,7 @@ use Exception;
  *
  * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html}
  */
-class DriveOpStripeExtension extends Extension
+class RegiosoftStripeExtension extends Extension
 {
 
     /**

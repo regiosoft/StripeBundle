@@ -1,6 +1,6 @@
 <?php
 
-namespace DriveOp\StripeBundle\DependencyInjection;
+namespace Regiosoft\StripeBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -13,7 +13,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 class Configuration implements ConfigurationInterface
 {
 
-    const ROOT_NAME = 'driveop';
+    const ROOT_NAME = 'regiosoft';
     const APP_NAME = 'stripe';
 
     /**
