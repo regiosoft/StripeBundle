@@ -32,7 +32,31 @@ class StripeClient
                     "source" => $token,
                     "name" => $name,
                     "email" => $email,
-                    'phone' => $phone
+                    "phone" => $phone
+                )
+            );
+            return $customer;
+        } catch (Exception $error) {
+            return $error->getMessage();
+        }
+    }
+    /**
+     * @param $token
+     * @param $email
+     * @param $name
+     * @param $phone
+     * @param $address
+     * @return Customer|string
+     */
+    public function createCustomerWithAddress($token, $email, $name, $phone, $address)
+    {
+        try {
+            $customer = Customer::create(array(
+                    "source" => $token,
+                    "name" => $name,
+                    "email" => $email,
+                    "phone" => $phone,
+                    "address" => $address
                 )
             );
             return $customer;
