@@ -194,6 +194,25 @@ class StripeClient
             ]
         );
     }
+
+    /**
+     * @param $productId
+     * @return Product
+     */
+    public function getProduct($productId)
+    {
+        return Product::retrieve($productId);
+    }
+
+    /**
+     * @param $planId
+     * @return Plan
+     */
+    public function getPlan($planId)
+    {
+        return Plan::retrieve($planId);
+    }
+
     #########################
     ##        Charge       ##
     #########################
