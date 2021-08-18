@@ -136,7 +136,7 @@ class StripeClient
             'customer' => $customerId,
             'items' => [['plan' => $planId]]
         ];
-        if ($cardId) $subscriptionOptions['default_source'] = $cardId;
+        if ($cardId) $subscriptionOptions['default_payment_method'] = $cardId;
         if ($trialEnd) $subscriptionOptions['trial_end'] = $trialEnd;
         if ($billingCycleAnchor) $subscriptionOptions['billing_cycle_anchor'] = $billingCycleAnchor;
         if ($coupon) $subscriptionOptions['coupon'] = $coupon;
