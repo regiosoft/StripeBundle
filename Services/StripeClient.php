@@ -6,6 +6,8 @@ use Stripe\Subscription;
 use Stripe\Charge;
 use Stripe\Refund;
 use Stripe\PaymentIntent;
+use Stripe\Plan;
+use Stripe\Product;
 use Exception;
 class StripeClient
 {
