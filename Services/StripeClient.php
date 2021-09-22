@@ -215,6 +215,29 @@ class StripeClient
         return Plan::retrieve($planId);
     }
 
+    /**
+     * @param $subscriptionId
+     * @param $planId
+     * @return Subscription
+     */
+    public function updateSubscriptionPlan($subscriptionId, $planId)
+    {
+        $subscription = Subscription::retrieve($subscriptionId);
+        return Subscription::update(
+            $subscriptionId,
+            [
+                'billing_cycle_anchor' => 'now',
+                'proration_behavior' => 'create_prorations',
+                'items' => [
+                    [
+                        'id' => $subscription->items->data[0]->id,
+                        'price' => $planId,
+                    ],
+                ],
+            ]
+        );
+    }
+
     #########################
     ##        Charge       ##
     #########################
