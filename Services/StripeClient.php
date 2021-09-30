@@ -8,6 +8,7 @@ use Stripe\Refund;
 use Stripe\PaymentIntent;
 use Stripe\Plan;
 use Stripe\Product;
+use Stripe\Source;
 use Exception;
 class StripeClient
 {
@@ -109,6 +110,20 @@ class StripeClient
             return $error->getMessage();
         }
     }
+
+    /**
+     * @param $customerId
+     * @param $cardId
+     * @return Source
+     */
+    public function getCard($customerId, $cardId)
+    {
+        return Customer::retrieveSource(
+            $customerId,
+            $cardId
+        );
+    }
+
     /**
      * @param $customerId
      * @return Customer
