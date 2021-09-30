@@ -192,7 +192,7 @@ class StripeClient
         Subscription::update(
             $subscriptionId,
             [
-                'default_source' => $cardId,
+                'default_payment_method' => $cardId,
             ]
         );
     }
