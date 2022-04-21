@@ -1,5 +1,6 @@
 <?php
 namespace Regiosoft\StripeBundle\Services;
+use Stripe\Price;
 use Stripe\Stripe;
 use Stripe\Customer;
 use Stripe\Subscription;
@@ -213,15 +214,6 @@ class StripeClient
     }
 
     /**
-     * @param $productId
-     * @return Product
-     */
-    public function getProduct($productId)
-    {
-        return Product::retrieve($productId);
-    }
-
-    /**
      * @param $planId
      * @return Plan
      */
@@ -252,6 +244,64 @@ class StripeClient
             ]
         );
     }
+
+    #########################
+    ##       Product       ##
+    #########################
+
+    /**
+     * @param $data
+     * @return Product
+     */
+    public function createProduct($data)
+    {
+        return Product::create([
+            'name' => $data['name'],
+            'description' => $data['description'],
+        ]);
+    }
+
+    /**
+     * @param $productId
+     * @param $data
+     * @return Product
+     */
+    public function updateProduct($productId, $data)
+    {
+        return Product::update($productId, [
+            'name' => $data['name'],
+            'description' => $data['description']
+        ]);
+    }
+
+    /**
+     * @param $productId
+     * @return Product
+     */
+    public function getProduct($productId)
+    {
+        return Product::retrieve($productId);
+    }
+
+    #########################
+    ##        Price        ##
+    #########################
+
+    /**
+     * @param $productId
+     * @param $data
+     * @return Price
+     */
+    public function createPrice($productId, $data)
+    {
+        return Price::create([
+            'unit_amount' => $data['amount'],
+            'currency' => $data['currency'],
+            'recurring' => ['interval' => $data['interval']],
+            'product' => $productId,
+        ]);
+    }
+
 
     #########################
     ##        Charge       ##
