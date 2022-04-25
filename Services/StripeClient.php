@@ -1,5 +1,6 @@
 <?php
 namespace Regiosoft\StripeBundle\Services;
+use Stripe\Invoice;
 use Stripe\Price;
 use Stripe\Stripe;
 use Stripe\Customer;
@@ -120,6 +121,19 @@ class StripeClient
     public function getCard($customerId, $cardId)
     {
         return Customer::retrieveSource(
+            $customerId,
+            $cardId
+        );
+    }
+
+    /**
+     * @param $customerId
+     * @param $cardId
+     * @return Source
+     */
+    public function deleteCard($customerId, $cardId)
+    {
+        return Customer::deleteSource(
             $customerId,
             $cardId
         );
@@ -409,4 +423,19 @@ class StripeClient
             return $error->getMessage();
         }
     }
+
+    #########################
+    ##       Invoice       ##
+    #########################
+
+    /**
+     * @param $invoiceId
+     * @return Invoice
+     */
+    public function getInvoice($invoiceId)
+    {
+        return Invoice::retrieve($invoiceId);
+    }
+
+
 }
