@@ -8,6 +8,7 @@ use Stripe\Subscription;
 use Stripe\Charge;
 use Stripe\Refund;
 use Stripe\PaymentIntent;
+use Stripe\SetupIntent;
 use Stripe\Plan;
 use Stripe\Product;
 use Stripe\Source;
@@ -23,6 +24,7 @@ class StripeClient
     #########################
     ##       Customer      ##
     #########################
+
     /**
      * @param $token
      * @param $email
@@ -45,6 +47,7 @@ class StripeClient
             return $error->getMessage();
         }
     }
+
     /**
      * @param $token
      * @param $email
@@ -69,6 +72,7 @@ class StripeClient
             return $error->getMessage();
         }
     }
+
     /**
      * @param $customerId
      * @return Customer|string
@@ -82,6 +86,7 @@ class StripeClient
             return $error->getMessage();
         }
     }
+
     /**
      * @param $customerId
      * @return Customer|string
@@ -95,6 +100,7 @@ class StripeClient
             return $error->getMessage();
         }
     }
+
     /**
      * @param $customerId
      * @param $source
@@ -153,6 +159,7 @@ class StripeClient
     #########################
     ##     Subscription    ##
     #########################
+
     /**
      * @param $customerId
      * @param $planId
@@ -179,6 +186,7 @@ class StripeClient
             return $error->getMessage();
         }
     }
+
     /**
      * @param $subscriptionId
      * @return Subscription
@@ -187,6 +195,7 @@ class StripeClient
     {
         return Subscription::retrieve($subscriptionId);
     }
+
     /**
      * @param $subscriptionId
      */
@@ -201,6 +210,7 @@ class StripeClient
         //$subscription = $this->getSubscription($subscriptionId);
         //$subscription->cancel();
     }
+
     /**
      * @param $subscriptionId
      */
@@ -213,6 +223,7 @@ class StripeClient
             ]
         );
     }
+
     /**
      * @param $subscriptionId
      * @param $cardId
@@ -316,10 +327,33 @@ class StripeClient
         ]);
     }
 
+    /**
+     * @param $productId
+     * @param $data
+     * @return Price
+     */
+    public function createOneTimePrice($productId, $data)
+    {
+        return Price::create([
+            'unit_amount' => $data['amount'],
+            'currency' => $data['currency'],
+            'product' => $productId,
+        ]);
+    }
+
+    /**
+     * @param $priceId
+     * @return Price
+     */
+    public function getPrice($priceId)
+    {
+        return Price::retrieve($priceId);
+    }
 
     #########################
     ##        Charge       ##
     #########################
+
     /**
      * @param $customer
      * @param $amount
@@ -341,6 +375,7 @@ class StripeClient
             return $error->getMessage();
         }
     }
+
     /**
      * @param $customer
      * @param $amount
@@ -363,6 +398,7 @@ class StripeClient
             return $error->getMessage();
         }
     }
+
     /**
      * @param $charge
      * @return Charge|string
@@ -378,9 +414,11 @@ class StripeClient
             return $error->getMessage();
         }
     }
+
     #########################
     ##   Payment intent    ##
     #########################
+
     /**
      * @param $customer
      * @param $amount
@@ -389,8 +427,9 @@ class StripeClient
      * @param string $currency
      * @return PaymentIntent|string
      */
-    public function createPaymentIntent(Customer $customer, $amount, $description, $confirm, $currency = 'mxn')
+    public function createPaymentIntent(Customer $customer, $amount, $description, $confirm, $currency = 'mxn', $cardId = null)
     {
+        if (!$cardId) $cardId = $customer->default_source;
         try {
             $paymentIntent = PaymentIntent::create([
                 'customer' => $customer,
@@ -398,13 +437,14 @@ class StripeClient
                 'description' => $description,
                 'currency' => $currency,
                 'confirm' => $confirm,
-                'payment_method' => $customer->default_source
+                'payment_method' => $cardId
             ]);
             return $paymentIntent;
         } catch (Exception $error) {
             return $error->getMessage();
         }
     }
+
     /**
      * @param $paymentIntentId
      * @return PaymentIntent|string
@@ -418,6 +458,32 @@ class StripeClient
         }
         try {
             $paymentIntent->confirm();
+            return $paymentIntent;
+        } catch (Exception $error) {
+            return $error->getMessage();
+        }
+    }
+
+    #########################
+    ##   Setup intent    ##
+    #########################
+
+    /**
+     * @param $customer
+     * @param $amount
+     * @param $description
+     * @param $confirm
+     * @param string $currency
+     * @return PaymentIntent|string
+     */
+    public function createSetupIntent(Customer $customer, $confirm)
+    {
+        try {
+            $paymentIntent = SetupIntent::create([
+                'customer' => $customer,
+                'confirm' => $confirm,
+                'payment_method' => $customer->default_source
+            ]);
             return $paymentIntent;
         } catch (Exception $error) {
             return $error->getMessage();
