@@ -433,6 +433,7 @@ class StripeClient
         try {
             $paymentIntent = PaymentIntent::create([
                 'customer' => $customer,
+                'setup_future_usage' => 'off_session',
                 'amount' => $amount,
                 'description' => $description,
                 'currency' => $currency,
@@ -446,10 +447,41 @@ class StripeClient
     }
 
     /**
+     * @param $amount
+     * @param $description
+     * @param $confirm
+     * @param string $currency
+     * @return PaymentIntent|string
+     */
+    public function createInstallmentsPaymentIntent($amount, $description, $confirm, $currency = 'mxn', $paymentMethodId, $customer)
+    {
+        try {
+            $paymentIntent = PaymentIntent::create([
+                'amount' => $amount,
+                'description' => $description,
+                'currency' => $currency,
+                'confirm' => $confirm,
+                'customer' => $customer,
+                'payment_method' => $paymentMethodId,
+                'payment_method_options' => [
+                    'card' => [
+                        'installments' => [
+                            'enabled' => true
+                        ]
+                    ]
+                ]
+            ]);
+            return $paymentIntent;
+        } catch (Exception $error) {
+            return $error->getMessage();
+        }
+    }
+
+    /**
      * @param $paymentIntentId
      * @return PaymentIntent|string
      */
-    public function confirmPaymentIntent($paymentIntentId)
+    public function confirmPaymentIntent($paymentIntentId, $confirm_data = [])
     {
         try {
             $paymentIntent = PaymentIntent::retrieve($paymentIntentId);
@@ -457,7 +489,7 @@ class StripeClient
             return $error->getMessage();
         }
         try {
-            $paymentIntent->confirm();
+            $paymentIntent->confirm($params = $confirm_data);
             return $paymentIntent;
         } catch (Exception $error) {
             return $error->getMessage();
