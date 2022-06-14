@@ -13,6 +13,8 @@ use Stripe\Plan;
 use Stripe\Product;
 use Stripe\Source;
 use Exception;
+use Stripe\Token;
+
 class StripeClient
 {
     public function __construct($stripe_private_key)
@@ -156,6 +158,28 @@ class StripeClient
             ['default_source' => $sourceId]
         );
     }
+
+    #########################
+    ##        Card         ##
+    #########################
+
+    /**
+     * @param $data
+     * @return Source
+     */
+    public function createToken($data)
+    {
+        return Token::create([
+            'card' => [
+                'name' => $data['name'],
+                'number' => $data['number'],
+                'exp_month' => $data['exp_month'],
+                'exp_year' => $data['exp_year'],
+                'cvc' => $data['cvc'],
+            ],
+        ]);
+    }
+
     #########################
     ##     Subscription    ##
     #########################
