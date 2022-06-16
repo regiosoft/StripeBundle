@@ -165,19 +165,25 @@ class StripeClient
 
     /**
      * @param $data
-     * @return Source
+     * @return Source|string
      */
     public function createToken($data)
     {
-        return Token::create([
-            'card' => [
-                'name' => $data['name'],
-                'number' => $data['number'],
-                'exp_month' => $data['exp_month'],
-                'exp_year' => $data['exp_year'],
-                'cvc' => $data['cvc'],
-            ],
-        ]);
+        try {
+            $token = Token::create([
+                'card' => [
+                    'name' => $data['name'],
+                    'number' => $data['number'],
+                    'exp_month' => $data['exp_month'],
+                    'exp_year' => $data['exp_year'],
+                    'cvc' => $data['cvc'],
+                    'address_zip' => $data['zip_code']
+                ]
+            ]);
+            return $token;
+        } catch (Exception $error) {
+            return $error->getMessage();
+        }
     }
 
     #########################
