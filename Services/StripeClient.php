@@ -526,6 +526,22 @@ class StripeClient
         }
     }
 
+    /**
+     * @param $paymentIntentId
+     * @return Refund|string
+     */
+    public function createPaymentIntentRefund($paymentIntentId)
+    {
+        try {
+            $refund = Refund::create([
+                'payment_intent' => $paymentIntentId
+            ]);
+            return $refund;
+        } catch (Exception $error) {
+            return $error->getMessage();
+        }
+    }
+
     #########################
     ##   Setup intent    ##
     #########################
