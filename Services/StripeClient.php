@@ -457,7 +457,7 @@ class StripeClient
      * @param string $currency
      * @return PaymentIntent|string
      */
-    public function createPaymentIntent(Customer $customer, $amount, $description, $confirm, $currency = 'mxn', $cardId = null, $returnUrl = '')
+    public function createPaymentIntent(Customer $customer, $amount, $description, $confirm, $currency = 'mxn', $cardId = null, $returnUrl = null)
     {
         if (!$cardId) $cardId = $customer->default_source;
         try {
