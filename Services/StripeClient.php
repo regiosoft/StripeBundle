@@ -543,6 +543,17 @@ class StripeClient
         }
     }
 
+    /**
+     * @param $paymentIntentId
+     * @return PaymentIntent
+     */
+    public function getPaymentIntent($paymentIntentId)
+    {
+        return PaymentIntent::retrieve(
+            $paymentIntentId
+        );
+    }
+
     #########################
     ##   Setup intent    ##
     #########################
