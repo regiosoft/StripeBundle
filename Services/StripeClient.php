@@ -1,5 +1,6 @@
 <?php
 namespace Regiosoft\StripeBundle\Services;
+use Stripe\Coupon;
 use Stripe\Invoice;
 use Stripe\Price;
 use Stripe\Stripe;
@@ -591,6 +592,55 @@ class StripeClient
     public function getInvoice($invoiceId)
     {
         return Invoice::retrieve($invoiceId);
+    }
+
+    #########################
+    ##       Coupons       ##
+    #########################
+
+    /**
+     * @param $data
+     * @param $currency
+     * @return Coupon
+     */
+    public function createCoupon($data, $currency)
+    {
+        if (!$currency) $currency = 'mxn';
+        if (array_key_exists("duration",$data)) {
+            return Coupon::create([
+                'name' => $data['name'],
+                $data['coupon_type'] => $data['amount'],
+                'duration' => 'repeating',
+                'duration_in_months' => $data['duration'],
+                'max_redemptions' => $data['quantity'],
+                'redeem_by' => $data['redeem_by'],
+                'currency' => $currency,
+                'applies_to' => [
+                    'products' => [$data['product_id']]
+                ]
+            ]);
+        }
+        else {
+            return Coupon::create([
+                'name' => $data['name'],
+                $data['coupon_type'] => $data['amount'],
+                'max_redemptions' => $data['quantity'],
+                'redeem_by' => $data['redeem_by'],
+                'currency' => $currency,
+                'applies_to' => [
+                    'products' => [$data['product_id']]
+                ]
+            ]);
+        }
+    }
+
+    /**
+     * @param $couponId
+     * @return Coupon
+     */
+    public function getCoupon($couponId)
+    {
+        return Coupon::retrieve($couponId);
     }
 
 
