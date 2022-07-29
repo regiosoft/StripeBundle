@@ -608,7 +608,6 @@ class StripeClient
         if (!$currency) $currency = 'mxn';
         if (array_key_exists("duration",$data)) {
             return Coupon::create([
-                'name' => $data['name'],
                 $data['coupon_type'] => $data['amount'],
                 'duration' => 'repeating',
                 'duration_in_months' => $data['duration'],
@@ -622,7 +621,6 @@ class StripeClient
         }
         else {
             return Coupon::create([
-                'name' => $data['name'],
                 $data['coupon_type'] => $data['amount'],
                 'max_redemptions' => $data['quantity'],
                 'redeem_by' => $data['redeem_by'],
